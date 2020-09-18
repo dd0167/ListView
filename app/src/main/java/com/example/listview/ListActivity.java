@@ -36,18 +36,20 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         x=(TextView) findViewById(R.id.x);
         d=(TextView) findViewById(R.id.d);
         sn=(TextView) findViewById(R.id.sn);
-        numbers=new String[21];
+        numbers=new String[20];
 
-        x.setText("האיבר הראשון: "+fnum);
-        d.setText("הקפיצות: "+snum);
-        if (s=="han")
+        x.setText("האיבר הראשון: "+EditNumber(fnum));
+        d.setText("הקפיצות: "+EditNumber(snum));
+        if (s.equals("han"))
         {
-
+            for(int i=1;i<=numbers.length;i++){
+                numbers[i-1]=EditNumber(fnum*(double)Math.pow((double)snum,(double)(i-1)));
+            }
         }
-        else if (s=="hes")
+        else if (s.equals("hes"))
         {
-            for(int i=1;i<21;i++){
-                numbers[i]= String.valueOf(fnum+(i-1)*snum);
+            for(int i=1;i<=numbers.length;i++){
+                numbers[i-1]=EditNumber(fnum+(i-1)*snum);
             }
         }
 
@@ -59,12 +61,28 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         list.setAdapter(adp);
     }
 
+    private String EditNumber(double v) {
+        if((((double)((int)v))==(double)v))
+        {
+            return(String.valueOf((int)v));
+        }
+        else
+        {
+            return String.valueOf(v);
+        }
+    }
+
     public void back(View view) {
         finish();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        sum=0;
         n.setText("מיקום המספר: "+position);
+        for(int i=0;i<=position;i++){
+            sum=sum+Double.parseDouble(numbers[i]);
+        }
+        sn.setText("סכום המספרים עד המספר שנלחץ: "+EditNumber(sum));
     }
 }
